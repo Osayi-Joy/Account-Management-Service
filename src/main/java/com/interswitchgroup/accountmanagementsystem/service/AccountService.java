@@ -35,7 +35,7 @@ public class AccountService {
 
     public Account updateAccount(String id, Account account) {
         Account account1 = accountRepository.findById(id).orElseThrow(() -> new NotFoundException("Account with given id not found"));
-        account1.setAccountBalance(account.getAccountBalance());
+        account1.setAccountBalance(account.getAccountBalance().add(account1.getAccountBalance()));
         return accountRepository.save(account1);
     }
 

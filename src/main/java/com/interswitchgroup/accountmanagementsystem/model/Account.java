@@ -1,27 +1,25 @@
 package com.interswitchgroup.accountmanagementsystem.model;
 
+import com.interswitchgroup.accountmanagementsystem.audit.DateAudit;
 import com.interswitchgroup.accountmanagementsystem.model.enumeration.AccountType;
 import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Entity
-public class Account {
+public class Account extends DateAudit {
 
     @Id @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
     private String accountNumber;
-    private BigDecimal accountBalance;
-    @CreatedDate
-    private LocalDateTime created_at;
-    @LastModifiedDate
-    private LocalDateTime updated_at;
+    private BigDecimal accountBalance = BigDecimal.ZERO;
 
     public String getId() {
         return id;
@@ -36,8 +34,6 @@ public class Account {
         this.accountType = accountType;
         this.accountNumber = accountNumber;
         this.accountBalance = accountBalance;
-        this.created_at = created_at;
-        this.updated_at = updated_at;
     }
 
     public Account() {
@@ -67,33 +63,19 @@ public class Account {
         this.accountBalance = accountBalance;
     }
 
-    public LocalDateTime getCreated_at() {
-        return created_at;
-    }
 
-    public void setCreated_at(LocalDateTime created_at) {
-        this.created_at = created_at;
-    }
-
-    public LocalDateTime getUpdated_at() {
-        return updated_at;
-    }
-
-    public void setUpdated_at(LocalDateTime updated_at) {
-        this.updated_at = updated_at;
-    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return Objects.equals(id, account.id) && accountType == account.accountType && Objects.equals(accountNumber, account.accountNumber) && Objects.equals(accountBalance, account.accountBalance) && Objects.equals(created_at, account.created_at) && Objects.equals(updated_at, account.updated_at);
+        return Objects.equals(id, account.id) && accountType == account.accountType && Objects.equals(accountNumber, account.accountNumber) && Objects.equals(accountBalance, account.accountBalance);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, accountType, accountNumber, accountBalance, created_at, updated_at);
+        return Objects.hash(id, accountType, accountNumber, accountBalance);
     }
 
     @Override
@@ -103,8 +85,6 @@ public class Account {
                 ", accountType=" + accountType +
                 ", accountNumber='" + accountNumber + '\'' +
                 ", accountBalance=" + accountBalance +
-                ", created_at=" + created_at +
-                ", updated_at=" + updated_at +
                 '}';
     }
 }

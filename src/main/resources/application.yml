@@ -1,11 +1,13 @@
 spring:
-  profiles:
-    active: dev
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
     password: root
     url: jdbc:postgresql://localhost/postgres
+  flyway:
+    url: jdbc:postgresql://localhost:5432/postgres
+    password: root
+    user: postgres
   jpa:
     show-sql: true
     generate-ddl: true
