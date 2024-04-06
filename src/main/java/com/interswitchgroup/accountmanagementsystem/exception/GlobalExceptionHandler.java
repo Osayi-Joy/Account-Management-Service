@@ -20,6 +20,7 @@ public class GlobalExceptionHandler {
             return createHttpErrorInfo(HttpStatus.NOT_FOUND, request, ex);
         }
 
+
         @ResponseStatus(HttpStatus.BAD_REQUEST)
         @ExceptionHandler(BadRequestException.class)
         public @ResponseBody HttpErrorInfo handleBadRequestExceptions(HttpServletRequest request, Exception ex){
@@ -31,6 +32,12 @@ public class GlobalExceptionHandler {
         public @ResponseBody HttpErrorInfo handleInternalServerExceptions(HttpServletRequest request, Exception ex){
             return createHttpErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR, request, ex);
         }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public @ResponseBody HttpErrorInfo handleGenericExceptions(HttpServletRequest request, Exception ex){
+        return createHttpErrorInfo(HttpStatus.INTERNAL_SERVER_ERROR, request, ex);
+    }
 
         private HttpErrorInfo createHttpErrorInfo(HttpStatus httpStatus, HttpServletRequest request, Exception ex) {
             final String path = request.getServletPath();

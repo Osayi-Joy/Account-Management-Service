@@ -2,17 +2,17 @@ spring:
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
-    password: root
-    url: jdbc:postgresql://localhost/postgres
+    password: password
+    url: jdbc:postgresql://localhost:5432/account-management-db
   flyway:
-    url: jdbc:postgresql://localhost:5432/postgres
-    password: root
+    url: jdbc:postgresql://localhost:5432/account-management-db
+    password: password
     user: postgres
   jpa:
     show-sql: true
     generate-ddl: true
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     database: postgresql
   sql:
     init:
