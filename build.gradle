@@ -25,10 +25,29 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.flywaydb:flyway-core'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
+	implementation 'org.springframework.boot:spring-boot-starter-mail'
+	implementation 'org.modelmapper:modelmapper:2.4.4'
+	implementation 'org.projectlombok:lombok'
+	implementation 'com.auth0:java-jwt:3.18.2'
+	implementation 'org.springframework.security:spring-security-oauth2-jose'
+	implementation 'commons-validator:commons-validator:1.7'
+	implementation 'org.springframework.security:spring-security-oauth2-resource-server'
+	implementation 'org.apache.commons:commons-lang3:3.12.0'
+	implementation 'org.springdoc:springdoc-openapi-ui:1.5.12'
+	implementation 'org.springdoc:springdoc-openapi-common:1.5.9'
+
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf:2.6.3'
+	annotationProcessor 'org.projectlombok:lombok'
 	runtimeOnly 'org.postgresql:postgresql'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.hamcrest:hamcrest:2.2'
+}
+dependencyManagement {
+	dependencies {
+		dependency "io.github.classgraph:classgraph:4.8.139"
+	}
 }
 
 tasks.named('test') {

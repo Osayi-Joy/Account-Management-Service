@@ -1,4 +1,6 @@
 spring:
+  profiles:
+    active: ${SPRING_PROFILES_ACTIVE:dev}
   datasource:
     driver-class-name: org.postgresql.Driver
     username: postgres
@@ -9,7 +11,7 @@ spring:
     password: password
     user: postgres
   jpa:
-    show-sql: true
+    show-sql: false
     generate-ddl: true
     hibernate:
       ddl-auto: update

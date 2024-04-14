@@ -1,14 +1,15 @@
 package com.interswitchgroup.accountmanagementsystem.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.interswitchgroup.accountmanagementsystem.dto.AccountBalanceUpdateDto;
-import com.interswitchgroup.accountmanagementsystem.dto.AccountDto;
-import com.interswitchgroup.accountmanagementsystem.exception.ApplicationException;
-import com.interswitchgroup.accountmanagementsystem.exception.NotFoundException;
-import com.interswitchgroup.accountmanagementsystem.model.Account;
-import com.interswitchgroup.accountmanagementsystem.model.enumeration.AccountType;
-import com.interswitchgroup.accountmanagementsystem.model.enumeration.TransactionType;
-import com.interswitchgroup.accountmanagementsystem.service.AccountService;
+import com.interswitchgroup.accountmanagementsystem.accounts.controller.AccountController;
+import com.interswitchgroup.accountmanagementsystem.accounts.dto.AccountBalanceUpdateDto;
+import com.interswitchgroup.accountmanagementsystem.accounts.dto.AccountDto;
+import com.interswitchgroup.accountmanagementsystem.common.exception.ApplicationException;
+import com.interswitchgroup.accountmanagementsystem.common.exception.NotFoundException;
+import com.interswitchgroup.accountmanagementsystem.accounts.model.Account;
+import com.interswitchgroup.accountmanagementsystem.accounts.model.enumeration.AccountType;
+import com.interswitchgroup.accountmanagementsystem.accounts.model.enumeration.TransactionType;
+import com.interswitchgroup.accountmanagementsystem.accounts.service.AccountService;
 import jakarta.validation.ConstraintViolationException;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,7 +53,7 @@ class AccountControllerTest {
         Account account = new Account();
         account.setAccountType(AccountType.SAVINGS);
         account.setAccountBalance(BigDecimal.valueOf(500.55));
-        account.setId("123456");
+//        account.setId("123456");
         when(accountService.findById("123456")).thenReturn(account);
 
         this.mockMvc.perform(get("/api/v1/account/123456"))
@@ -128,7 +129,7 @@ class AccountControllerTest {
     @Test
     void updateAccountBalance() throws Exception {
         Account account = new Account();
-        account.setId("1234");
+//        account.setId("1234");
         account.setAccountType(AccountType.SAVINGS);
         account.setAccountBalance(BigDecimal.valueOf(200.50));
 
@@ -137,7 +138,7 @@ class AccountControllerTest {
         accountBalanceUpdateDto.setTransactionType(TransactionType.DEPOSIT);
 
         Account updatedAccount = new Account();
-        updatedAccount.setId("1234");
+//        updatedAccount.setId("1234");
         updatedAccount.setAccountType(AccountType.SAVINGS);
         updatedAccount.setAccountBalance(BigDecimal.valueOf(700.50));
 
