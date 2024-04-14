@@ -26,6 +26,8 @@ public class Constants {
     public static final String AUTHENTICATION_API_VI = API_V1 + "authentication/process/";
     public static final String ROLES_API_V1 = API_V1 + "role/process/";
     public static final String ADMINISTRATOR_API_V1 = API_V1 + "administrator/process/";
+
+    public static final String CUSTOMER_API_V1 = API_V1 + "customers/process";
     private Constants(){
     }
 }

@@ -1,7 +1,8 @@
 package com.interswitchgroup.accountmanagementsystem.administrators.service;
 
-import com.interswitchgroup.accountmanagementsystem.administrators.model.AdministratorInvitation;
-import com.interswitchgroup.accountmanagementsystem.authentication.dto.request.UserAuthProfileRequest;
+import com.interswitchgroup.accountmanagementsystem.administrators.dto.AcceptInvitationRequest;
+import com.interswitchgroup.accountmanagementsystem.administrators.dto.AdministratorDTO;
+import com.interswitchgroup.accountmanagementsystem.common.utils.PaginatedResponseDTO;
 
 /**
  * @author Joy Osayi
@@ -10,7 +11,13 @@ import com.interswitchgroup.accountmanagementsystem.authentication.dto.request.U
 public interface AdministratorService {
     void saveSuperAdmin();
 
-    AdministratorInvitation inviteAdministrator(String email, String role);
+    void inviteAdministrator(String email, String role);
 
-    void acceptInvitation(String invitationCode, UserAuthProfileRequest userProfileRequest);
+    AdministratorDTO acceptInvitation(String invitationCode, AcceptInvitationRequest acceptInvitationRequest);
+
+    PaginatedResponseDTO<AdministratorDTO> getAllAdministrators(int pageNumber, int pageSize);
+
+    AdministratorDTO getAdministratorById(Long administratorId);
+
+    AdministratorDTO viewAuthenticatedAdministratorDetails();
 }

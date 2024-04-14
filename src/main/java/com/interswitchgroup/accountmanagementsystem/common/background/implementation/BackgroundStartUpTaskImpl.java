@@ -2,11 +2,14 @@ package com.interswitchgroup.accountmanagementsystem.common.background.implement
 
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.interswitchgroup.accountmanagementsystem.administrators.service.AdministratorService;
 import com.interswitchgroup.accountmanagementsystem.authentication.dto.PermissionDTO;
 import com.interswitchgroup.accountmanagementsystem.authentication.dto.request.RoleCreationDTO;
 import com.interswitchgroup.accountmanagementsystem.authentication.model.Permission;
+import com.interswitchgroup.accountmanagementsystem.authentication.model.Role;
 import com.interswitchgroup.accountmanagementsystem.authentication.service.PermissionService;
 import com.interswitchgroup.accountmanagementsystem.authentication.service.RoleService;
+import com.interswitchgroup.accountmanagementsystem.authentication.service.UserAuthService;
 import com.interswitchgroup.accountmanagementsystem.common.utils.CommonUtils;
 import java.io.File;
 import java.io.IOException;
@@ -32,16 +35,18 @@ public class BackgroundStartUpTaskImpl {
   private final PermissionService permissionServiceImpl;
   @Value("${account-service.systemDefinedPermissions}")
   private String systemDefinedPermissions;
+  private final AdministratorService administratorService;
+  private final UserAuthService userAuthProfileServiceImpl;
 
 
  
   @EventListener(ContextRefreshedEvent.class)
   public void runSystemStartUpTask() {
     updateSystemPermissions();
-//    createSuperAdminRole();
-//    createAdminRole();
-//    createUserRole();
-
+    createOrUpdateSuperAdminRole();
+    createOrUpdateAdminRole();
+    createUserRole();
+    administratorService.saveSuperAdmin();
   }
 
 
@@ -59,34 +64,90 @@ public class BackgroundStartUpTaskImpl {
     }
   }
 
-  private void createSuperAdminRole() {
-    RoleCreationDTO superAdminDTO = new RoleCreationDTO();
-    superAdminDTO.setName(ROLE_SUPER_ADMIN);
-    superAdminDTO.setDescription("Super Admin Role");
-    superAdminDTO.setPermissions(permissionServiceImpl.retrieveAllSystemPermissions().stream()
-            .map(PermissionDTO::getName)
-            .collect(Collectors.toSet()));
-    roleServiceImpl.createCustomNewRole(superAdminDTO);
+  private void createOrUpdateSuperAdminRole() {
+    boolean roleExists = roleServiceImpl.checkIfRoleExists(ROLE_SUPER_ADMIN);
+    if (roleExists) {
+      Role existingRole = roleServiceImpl.retrieveRole(ROLE_SUPER_ADMIN);
+      Set<String> existingPermissions = existingRole.getPermissions().stream()
+              .map(Permission::getName)
+              .collect(Collectors.toSet());
+
+      Set<String> allSystemPermissions = permissionServiceImpl.retrieveAllSystemPermissions().stream()
+              .map(PermissionDTO::getName)
+              .collect(Collectors.toSet());
+
+      Set<String> newPermissions = allSystemPermissions.stream()
+              .filter(permission -> !existingPermissions.contains(permission))
+              .collect(Collectors.toSet());
+
+      if (!newPermissions.isEmpty()) {
+        existingRole.getPermissions().addAll(
+                permissionServiceImpl.retrieveValidPermissions(newPermissions));
+        roleServiceImpl.updateExistingRole(RoleCreationDTO.builder()
+                        .name(existingRole.getName())
+                        .description(existingRole.getDescription())
+                        .permissions(existingRole.getPermissions()
+                                .stream().map(Permission::getName).collect(Collectors.toSet()))
+                .build());
+        //TODO USERS PERMISSIONS
+        userAuthProfileServiceImpl.updateUsersPermissions(existingRole);
+      }
+    } else {
+      RoleCreationDTO superAdminDTO = RoleCreationDTO.builder()
+              .name(ROLE_SUPER_ADMIN)
+              .description("Super Admin Role")
+              .permissions(permissionServiceImpl.retrieveAllSystemPermissions().stream()
+                      .map(PermissionDTO::getName)
+                      .collect(Collectors.toSet()))
+              .build();
+      roleServiceImpl.createCustomNewRole(superAdminDTO);
+    }
   }
 
-  private void createAdminRole() {
-    RoleCreationDTO adminDTO = new RoleCreationDTO();
-    adminDTO.setName(ROLE_ADMIN);
-    adminDTO.setDescription("Admin Role");
-    adminDTO.setPermissions(permissionServiceImpl.retrievePermissionsByType("ADMIN").stream()
-            .map(Permission::getName)
-            .collect(Collectors.toSet()));
-    roleServiceImpl.createCustomNewRole(adminDTO);
+  private void createOrUpdateAdminRole() {
+    createOrUpdateRole(ROLE_ADMIN, "ADMIN", "Admin Role");
   }
+
 
   private void createUserRole() {
-    RoleCreationDTO userDTO = new RoleCreationDTO();
-    userDTO.setName(ROLE_USER);
-    userDTO.setDescription("User Role");
-    userDTO.setPermissions(permissionServiceImpl.retrievePermissionsByType("USERS").stream()
-            .map(Permission::getName)
-            .collect(Collectors.toSet()));
-    roleServiceImpl.createCustomNewRole(userDTO);
+    createOrUpdateRole(ROLE_USER, "USERS", "User Role");
+  }
+
+  private void createOrUpdateRole(String roleName, String roleType, String roleDescription) {
+    boolean roleExists = roleServiceImpl.checkIfRoleExists(roleName);
+    if (roleExists) {
+      Role existingRole = roleServiceImpl.retrieveRole(roleName);
+      Set<String> existingPermissions = existingRole.getPermissions().stream()
+              .map(Permission::getName)
+              .collect(Collectors.toSet());
+
+      Set<String> rolePermissions = permissionServiceImpl.retrievePermissionsByType(roleType).stream()
+              .map(Permission::getName)
+              .collect(Collectors.toSet());
+
+      Set<String> newPermissions = rolePermissions.stream()
+              .filter(permission -> !existingPermissions.contains(permission))
+              .collect(Collectors.toSet());
+
+      if (!newPermissions.isEmpty()) {
+        existingRole.getPermissions().addAll(permissionServiceImpl.retrieveValidPermissions(newPermissions));
+        roleServiceImpl.updateExistingRole(RoleCreationDTO.builder()
+                .name(existingRole.getName())
+                .description(existingRole.getDescription())
+                .permissions(existingRole.getPermissions().stream().map(Permission::getName).collect(Collectors.toSet()))
+                .build());
+        userAuthProfileServiceImpl.updateUsersPermissions(existingRole);
+      }
+    } else {
+      RoleCreationDTO roleDTO = RoleCreationDTO.builder()
+              .name(roleName)
+              .description(roleDescription)
+              .permissions(permissionServiceImpl.retrievePermissionsByType(roleType).stream()
+                      .map(Permission::getName)
+                      .collect(Collectors.toSet()))
+              .build();
+      roleServiceImpl.createCustomNewRole(roleDTO);
+    }
   }
 
   private File getSystemFile(String filePath) {

@@ -63,23 +63,7 @@ public class PermissionServiceImpl implements PermissionService {
             });
     permissionRepository.saveAll(newPermissions);
   }
-//  @Override
-//  public void addSystemPermissions(Set<Permission> newPermissions) {
-//    newPermissions.forEach(
-//            permission -> {
-//              Optional<Permission> existingPermission =
-//                      permissionRepository.findFirstByNameOrderByCreatedDate(permission.getName());
-//              if (existingPermission.isPresent()) {
-//                permission.setId(existingPermission.get().getId());
-//                permission.setPermissionType(existingPermission.get().getPermissionType());
-//                permission.setName(existingPermission.get().getName());
-//                permission.setDeleted(existingPermission.get().isDeleted());
-//                permission.setDescription(existingPermission.get().getDescription());
-//                permission.setPermissionType(existingPermission.get().getPermissionType());
-//              }
-//            });
-//    permissionRepository.saveAll(newPermissions);
-//  }
+
   @Override
   public Set<Permission> retrieveValidPermissions(Set<String> permissionNames) {
     return permissionRepository.findAllByNameIn(permissionNames);

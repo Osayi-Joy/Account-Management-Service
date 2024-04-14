@@ -24,6 +24,8 @@ public interface RoleService {
     @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.SERIALIZABLE)
     RoleDTO createCustomNewRole(RoleCreationDTO request);
 
+    boolean checkIfRoleExists(String name);
+
     void permissionCheck(RoleCreationDTO roleCreationDTO);
 
     void updateExistingRole(RoleCreationDTO roleDTO);

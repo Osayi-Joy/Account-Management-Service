@@ -22,4 +22,8 @@ public class ErrorConstants {
     public static final String LOGIN_FAILED = "login failed message";
     public static final String LOGIN_FAILED_USER_NOT_FOUND = "login failed user not found";
     public static final String PROFILE_DISABLED = "profile disabled";
+    public static final String USER_PROFILE_EXISTS = "A User profile with the provided email already exists";
+    public static final String CUSTOMER_PROFILE_EXISTS = "A Customer profile with the provided email already exists";
+    public static final String CUSTOMER_NOT_FOUND = "A Customer profile with the provided email not found";
+    public static final String ADMINISTRATOR_NOT_FOUND = "A Administrator profile with the provided email not found";
 }

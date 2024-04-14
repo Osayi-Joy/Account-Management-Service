@@ -9,7 +9,7 @@ import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.GroupedOpenApi;
+import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,7 +17,7 @@ import org.springframework.context.annotation.Description;
 import org.springframework.context.annotation.Primary;
 import org.thymeleaf.spring5.SpringTemplateEngine;
 
-import static com.interswitchgroup.accountmanagementsystem.common.constants.Constants.AUTHENTICATION_API_VI;
+import static com.interswitchgroup.accountmanagementsystem.common.constants.Constants.API_V1;
 
 
 /**
@@ -64,8 +64,8 @@ public class AccountServiceSwaggerConfig {
   }
 
   @Bean
-  public GroupedOpenApi AccountServiceApi() {
-    return GroupedOpenApi.builder().group("accountService").pathsToMatch(AUTHENTICATION_API_VI.concat("**")).build();
+  public GroupedOpenApi accountServiceApi() {
+    return GroupedOpenApi.builder().group("accountService").pathsToMatch(API_V1.concat("**")).build();
   }
 
 

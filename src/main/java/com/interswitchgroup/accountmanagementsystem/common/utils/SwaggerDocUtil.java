@@ -36,4 +36,25 @@ public class SwaggerDocUtil {
     public static final String ADMIN_CONTROLLER_ACCEPT_INVITATION_TITLE = "Accept Invitation";
     public static final String ADMIN_CONTROLLER_ACCEPT_INVITATION_DESCRIPTION = "Endpoint to accept an invitation to become an administrator";
 
+    public static final String GET_ADMINISTRATOR_BY_ID_SUMMARY = "Get administrator by ID";
+    public static final String GET_ADMINISTRATOR_BY_ID_DESCRIPTION = "Retrieve an administrator by its ID.";
+
+    public static final String GET_ALL_ADMINISTRATORS_SUMMARY = "Get all administrators";
+    public static final String GET_ALL_ADMINISTRATORS_DESCRIPTION = "Retrieve a paginated list of all administrators.";
+    public static final String CUSTOMER_CONTROLLER_TITLE = "Customer Controller";
+    public static final String CUSTOMER_CONTROLLER_DESCRIPTION = "APIs for managing customers.";
+
+    public static final String CREATE_CUSTOMER_SUMMARY = "Create a new customer";
+    public static final String CREATE_CUSTOMER_DESCRIPTION = "Create a new customer profile.";
+
+    public static final String GET_ALL_CUSTOMERS_SUMMARY = "Get all customers";
+    public static final String GET_ALL_CUSTOMERS_DESCRIPTION = "Retrieve a paginated list of all customers.";
+
+    public static final String GET_CUSTOMER_BY_ID_SUMMARY = "Get customer by ID";
+    public static final String GET_CUSTOMER_BY_ID_DESCRIPTION = "Retrieve a customer by its ID.";
+    public static final String VIEW_AUTHENTICATED_CUSTOMER_SUMMARY = "View details of authenticated customer";
+    public static final String VIEW_AUTHENTICATED_CUSTOMER_DESCRIPTION = "Retrieve details of the authenticated customer.";
+    public static final String VIEW_AUTHENTICATED_ADMINISTRATOR_SUMMARY = "View details of authenticated administrator";
+    public static final String VIEW_AUTHENTICATED_ADMINISTRATOR_DESCRIPTION = "Retrieve details of the authenticated administrator";
+
 }

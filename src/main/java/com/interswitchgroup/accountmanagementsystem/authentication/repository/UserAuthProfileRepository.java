@@ -4,6 +4,7 @@ import com.interswitchgroup.accountmanagementsystem.authentication.model.UserAut
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -18,5 +19,9 @@ public interface UserAuthProfileRepository extends JpaRepository<UserAuthProfile
     boolean existsByUsername(String username);
 
     Optional<UserAuthProfile> findFirstByUsernameOrderByCreatedDate(String username);
+
+    boolean existsByUsernameOrEmail(String username, String email);
+
+    List<UserAuthProfile> findByAssignedRole(String name);
 
 }

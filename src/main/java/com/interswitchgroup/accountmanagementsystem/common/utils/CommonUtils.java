@@ -4,11 +4,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.interswitchgroup.accountmanagementsystem.authentication.dto.UserAuthProfileDTO;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.springframework.data.domain.Page;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -45,9 +47,12 @@ public class CommonUtils {
     public static boolean validatePassword(String password) {
         // Password should have at least one capital letter, a number, and a special character
         // Password should be at least 8 characters long
-        String regex = "^(?=.*[A-Z])(?=.*[0-9])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$";
-        return password.matches(regex);
+        return password != null && password.length() >= 8
+                && password.matches(".*[A-Z].*")
+                && password.matches(".*[0-9].*")
+                && password.matches(".*[@#$%^&+=].*");
     }
+
 
 
     public static Map<String, String> getClaims(String username, UserAuthProfileDTO userDetails) {
@@ -74,6 +79,18 @@ public class CommonUtils {
         claims.put("role", userDetails.getAssignedRole());
         return claims;
     }
+
+    public static <T, E> PaginatedResponseDTO<T> createPaginatedResponse(Page<E> page, List<T> content) {
+        return PaginatedResponseDTO.<T>builder()
+                .content(content)
+                .currentPage(page.getNumber() + 1)
+                .totalPages(page.getTotalPages())
+                .totalItems(page.getTotalElements())
+                .isFirstPage(page.isFirst())
+                .isLastPage(page.isLast())
+                .build();
+    }
+
     private CommonUtils() {
         throw new UnsupportedOperationException("This is a utility class and cannot be instantiated");
     }

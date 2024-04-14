@@ -5,6 +5,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @author Joy Osayi
  * @createdOn Apr-12(Fri)-2024
@@ -14,4 +16,5 @@ public interface AdministratorRepository extends JpaRepository<Administrator, Lo
 
     boolean existsByUserAuthProfile_Email(String superAdminEmail);
 
+    Optional<Administrator> findByUserAuthProfile_Email(String username);
 }

@@ -56,7 +56,8 @@ public class AccountServiceConfig {
                         "/documentation/v3/api-docs",
                         "/download-license",
                         "/actuator/**",
-                        "/api/v1/account-service/administrator/process/accept-invitation/**")
+                        "/api/v1/account-service/administrator/process/accept-invitation/**",
+                                "/api/v1/account-service/customers/process/create")
                     .permitAll()
                     .anyRequest()
                     .authenticated())

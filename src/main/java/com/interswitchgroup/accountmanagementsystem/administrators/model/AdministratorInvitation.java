@@ -19,8 +19,8 @@ import org.hibernate.annotations.Where;
 @Entity
 @NoArgsConstructor
 @Table(name = "administrator_invitation")
-@SQLDelete(sql = "UPDATE administrator_invitation SET invitationStatus = 'DELETED' WHERE id=?")
-@Where(clause = "invitationStatus != 'DELETED'")
+@SQLDelete(sql = "UPDATE administrator_invitation SET invitation_status = 'DELETED' WHERE id=?")
+@Where(clause = "invitation_status != 'DELETED'")
 public class AdministratorInvitation extends Auditable<String> {
 
     @Column(name = "administrator_email", nullable = false, unique = true)

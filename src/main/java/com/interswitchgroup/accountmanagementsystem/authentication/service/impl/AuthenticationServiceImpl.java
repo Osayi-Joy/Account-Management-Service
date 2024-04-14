@@ -18,6 +18,7 @@ import com.interswitchgroup.accountmanagementsystem.common.exception.NotFoundExc
 import com.interswitchgroup.accountmanagementsystem.common.utils.CommonUtils;
 import java.util.*;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -29,6 +30,7 @@ import org.springframework.stereotype.Service;
  * @author Joy Osayi
  * @createdOn Apr-13(Sat)-2024
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class AuthenticationServiceImpl implements UserDetailsService, AuthenticationService {
@@ -36,7 +38,7 @@ public class AuthenticationServiceImpl implements UserDetailsService, Authentica
     private final UserAuthProfileRepository userAuthProfileRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtHelper jwtHelper;
-    LoginAttemptService loginAttemptServiceImpl;
+    private final LoginAttemptService loginAttemptServiceImpl;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -73,11 +75,10 @@ public class AuthenticationServiceImpl implements UserDetailsService, Authentica
                 CommonUtils.getClaims(loginRequestDTO.getUsername(), userDetails);
         Map<String, Object> additionalInformation = new HashMap<>();
         additionalInformation.put("firstName", userDetails.getFirstName());
+        additionalInformation.put("lastname", userDetails.getLastName());
         additionalInformation.put("email", userDetails.getEmail());
         additionalInformation.put("role", userDetails.getAssignedRole());
-        additionalInformation.put(
-                "name", userDetails.getFirstName().concat(" ").concat(userDetails.getLastName()));
-        return LoginResponse.builder()
+       return LoginResponse.builder()
                 .accessToken(jwtHelper.createJwtForClaims(loginRequestDTO.getUsername(), claims))
                 .additionalInformation(additionalInformation)
                 .build();

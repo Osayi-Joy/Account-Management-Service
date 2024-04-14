@@ -4,13 +4,10 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.interswitchgroup.accountmanagementsystem.common.enums.Status;
 import com.interswitchgroup.accountmanagementsystem.users.model.UserProfile;
 import jakarta.persistence.*;
-import lombok.*;
-import lombok.experimental.SuperBuilder;
-
 import java.io.Serializable;
-import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
+import lombok.*;
 
 /**
  * @author Joy Osayi
@@ -26,14 +23,9 @@ public class UserAuthProfile extends UserProfile implements Serializable {
 
     private String assignedRole;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "user_auth_profiles_and_permissions_mapping",
-            joinColumns =
-            @JoinColumn(name = "user_auth_profile_id", referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "permission_id", referencedColumnName = "id"))
+    @OneToMany(mappedBy = "userAuthProfile", cascade = CascadeType.ALL, orphanRemoval = true)
     @ToString.Exclude
-    private Set<Permission> permissions = new HashSet<>();
+    private Set<UserPermissionsMapping> userPermissionsMappings = new HashSet<>();
 
     @JsonIgnore
     @Enumerated(EnumType.STRING)

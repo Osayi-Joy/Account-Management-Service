@@ -45,6 +45,16 @@
     "permissionType": "ADMIN"
   },
   {
+    "name": "view-user-details",
+    "description": "This allows you to view a user details",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "view-users",
+    "description": "This allows you to view all user",
+    "permissionType": "ADMIN"
+  },
+  {
     "name": "create-roles",
     "description": "This allows you to create new roles",
     "permissionType": "ROLES"

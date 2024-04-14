@@ -6,6 +6,7 @@ import com.interswitchgroup.accountmanagementsystem.authentication.model.Role;
 import com.interswitchgroup.accountmanagementsystem.authentication.repository.RoleRepository;
 import com.interswitchgroup.accountmanagementsystem.authentication.service.PermissionService;
 import com.interswitchgroup.accountmanagementsystem.authentication.service.RoleService;
+import com.interswitchgroup.accountmanagementsystem.authentication.service.UserAuthService;
 import com.interswitchgroup.accountmanagementsystem.common.constants.ErrorConstants;
 import com.interswitchgroup.accountmanagementsystem.common.exception.BadRequestException;
 import com.interswitchgroup.accountmanagementsystem.common.exception.NotFoundException;
@@ -84,7 +85,6 @@ public class RoleServiceImpl implements RoleService {
     role.setDescription(roleDTO.getDescription());
     role.setPermissions(permissionServiceImpl.retrieveValidPermissions(roleDTO.getPermissions()));
     roleRepository.save(role);
-    //TODO USERS PERMISSIONS
   }
 
   @Override
@@ -99,7 +99,7 @@ public class RoleServiceImpl implements RoleService {
   public void checkRoleStatus(String name) {
     retrieveRole(name);
   }
-
+  @Override
   public boolean checkIfRoleExists(String name) {
     return roleRepository.existsByName(name);
   }

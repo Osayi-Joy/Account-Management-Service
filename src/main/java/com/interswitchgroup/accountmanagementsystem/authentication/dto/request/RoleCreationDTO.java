@@ -4,14 +4,15 @@ package com.interswitchgroup.accountmanagementsystem.authentication.dto.request;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
+
+import lombok.*;
 
 @Getter
 @Setter
 @ToString
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class RoleCreationDTO implements Serializable {
  @NonNull
  private String name;
