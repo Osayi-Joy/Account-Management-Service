@@ -15,6 +15,7 @@ import com.interswitchgroup.accountmanagementsystem.authentication.model.UserAut
 import com.interswitchgroup.accountmanagementsystem.authentication.service.RoleService;
 import com.interswitchgroup.accountmanagementsystem.authentication.service.UserAuthService;
 import com.interswitchgroup.accountmanagementsystem.common.constants.ErrorConstants;
+import com.interswitchgroup.accountmanagementsystem.common.email.EmailService;
 import com.interswitchgroup.accountmanagementsystem.common.exception.BadRequestException;
 import com.interswitchgroup.accountmanagementsystem.common.exception.NotFoundException;
 import com.interswitchgroup.accountmanagementsystem.common.utils.BeanUtilWrapper;
@@ -33,6 +34,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import com.interswitchgroup.accountmanagementsystem.common.enums.Status;
 
@@ -48,6 +50,7 @@ public class AdministratorServiceImpl implements AdministratorService {
     private final AdministratorRepository administratorRepository;
     private final AdministratorInvitationRepository administratorInvitationRepository;
     private final RoleService roleServiceImpl;
+    private final EmailService emailService;
     @Override
     public void saveSuperAdmin() {
         if (administratorRepository.existsByUserAuthProfile_Email(SUPER_ADMIN_EMAIL)) {
@@ -175,7 +178,7 @@ public class AdministratorServiceImpl implements AdministratorService {
         String subject = "Invitation to join as administrator";
         String body = "You have been invited to join as an administrator. Use the following invitation code to register: " + invitationCode;
 
-//        emailService.sendEmail(email, subject, body);
+        emailService.sendEmail(email, subject, body);
     }
 
     private AdministratorDTO convertToDTO(Administrator administrator) {
