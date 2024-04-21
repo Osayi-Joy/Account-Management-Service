@@ -1,0 +1,108 @@
+[
+  {
+    "name": "treat-requests",
+    "description": "This allows you to treat customers request you have been assigned to",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "view-dashboard",
+    "description": "This allows you to view dashboard modules and metrics",
+    "permissionType": "DASHBOARD"
+  },
+  {
+    "name": "view-self-user-details",
+    "description": "This allows you to view your user details",
+    "permissionType": "USERS"
+  },
+  {
+    "name": "view-administrative-users",
+    "description": "This allows you to view all backoffice users",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "view-administrative-user-details",
+    "description": "This allows you to view a administrative user details",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "export-administrative-users",
+    "description": "This allows you to export administrative users",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "invite-administrative-user",
+    "description": "This allows you to invite a new administrative user",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "resend-invite-email",
+    "description": "This allows you to resend an invite email",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "edit-user-details",
+    "description": "This allows you to edit a user details",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "view-user-details",
+    "description": "This allows you to view a user details",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "view-users",
+    "description": "This allows you to view all user",
+    "permissionType": "ADMIN"
+  },
+  {
+    "name": "create-roles",
+    "description": "This allows you to create new roles",
+    "permissionType": "ROLES"
+  },
+  {
+    "name": "view-permissions",
+    "description": "This allows you to view available permissions",
+    "permissionType": "ROLES"
+  },
+  {
+    "name": "view-roles",
+    "description": "This allows you to view available roles",
+    "permissionType": "ROLES"
+  },
+  {
+    "name": "delete-role",
+    "description": "This allows you to delete a role",
+    "permissionType": "ROLES"
+  },
+  {
+    "name": "edit-role",
+    "description": "This allows you to edit a role",
+    "permissionType": "ROLES"
+  },
+  {
+    "name": "view-role-details",
+    "description": "This allows you to view a role detail",
+    "permissionType": "ROLES"
+  },
+  {
+    "name": "enable-2fa",
+    "description": "This allows you to enable 2fa globally on the app",
+    "permissionType": "SETTINGS"
+  },
+  {
+    "name": "disable-2fa",
+    "description": "This allows you to disable 2fa globally on the app",
+    "permissionType": "SETTINGS"
+  },
+  {
+    "name": "enable-single-user-2fa",
+    "description": "This allows you to enable 2fa for a specific user",
+    "permissionType": "SETTINGS"
+  },
+  {
+    "name": "disable-single-user-2fa",
+    "description": "This allows you to disable 2fa for a specific user",
+    "permissionType": "SETTINGS"
+  }
+
+]
