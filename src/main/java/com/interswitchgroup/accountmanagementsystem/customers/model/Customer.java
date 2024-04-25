@@ -1,5 +1,6 @@
 package com.interswitchgroup.accountmanagementsystem.customers.model;
 
+import com.interswitchgroup.accountmanagementsystem.accounts.model.Account;
 import com.interswitchgroup.accountmanagementsystem.authentication.model.UserAuthProfile;
 import com.interswitchgroup.accountmanagementsystem.common.audit.Auditable;
 import jakarta.persistence.*;
@@ -38,6 +39,9 @@ public class Customer extends Auditable<String> implements Serializable {
 
     @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
     private List<Document> documents = new ArrayList<>();
+
+    @OneToMany(mappedBy = "customer", cascade = CascadeType.ALL)
+    private List<Account> accounts = new ArrayList<>();
 }
 
 

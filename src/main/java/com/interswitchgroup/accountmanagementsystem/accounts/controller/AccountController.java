@@ -2,6 +2,7 @@ package com.interswitchgroup.accountmanagementsystem.accounts.controller;
 
 import com.interswitchgroup.accountmanagementsystem.accounts.dto.AccountBalanceUpdateDto;
 import com.interswitchgroup.accountmanagementsystem.accounts.dto.AccountDto;
+import com.interswitchgroup.accountmanagementsystem.accounts.dto.AccountResponseDto;
 import com.interswitchgroup.accountmanagementsystem.accounts.model.Account;
 import com.interswitchgroup.accountmanagementsystem.accounts.service.AccountService;
 import org.springframework.http.HttpStatus;
@@ -22,32 +23,37 @@ public class AccountController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Account> findById(@PathVariable String id) {
+    public ResponseEntity<AccountResponseDto> findById(@PathVariable Long id) {
         return ResponseEntity.ok().body(accountService.findById(id));
     }
 
     @GetMapping
-    public ResponseEntity<List<Account>> findAllAccount() {
+    public ResponseEntity<List<AccountResponseDto>> findAllAccount() {
         return ResponseEntity.ok().body(accountService.findAll());
     }
 
+    @GetMapping("/account-number/{accountNumber}") // "findByAccountNumber
+    public ResponseEntity<List<AccountResponseDto>> findByAccountNumber(@PathVariable String accountNumber) {
+        return ResponseEntity.ok().body(accountService.findByAccountNumber(accountNumber));
+    }
+
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Account> createAccount(@RequestBody AccountDto accountDto) {
+    public ResponseEntity<AccountResponseDto> createAccount(@RequestBody AccountDto accountDto) {
         return ResponseEntity.status(HttpStatus.CREATED).body(accountService.createAccount(accountDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Account> updateAccount(@PathVariable String id, @RequestBody Account account) {
+    public ResponseEntity<AccountResponseDto> updateAccount(@PathVariable Long id, @RequestBody Account account) {
         return ResponseEntity.ok().body(accountService.updateAccount(id, account));
     }
 
     @PatchMapping("/{id}/balance")
-    public ResponseEntity<Account> updateAccountBalance(@PathVariable String id, @RequestBody AccountBalanceUpdateDto accountBalanceUpdateDto) {
+    public ResponseEntity<AccountResponseDto> updateAccountBalance(@PathVariable Long id, @RequestBody AccountBalanceUpdateDto accountBalanceUpdateDto) {
         return ResponseEntity.ok().body(accountService.updateAccountBalance(id, accountBalanceUpdateDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteAccount(@PathVariable String id) {
+    public ResponseEntity<?> deleteAccount(@PathVariable Long id) {
         accountService.deleteAccount(id);
         return ResponseEntity.noContent().build();
     }

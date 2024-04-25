@@ -3,6 +3,7 @@ package com.interswitchgroup.accountmanagementsystem.customers.dto;
  * @author Joy Osayi
  * @createdOn Apr-14(Sun)-2024
  */
+import com.interswitchgroup.accountmanagementsystem.accounts.model.enumeration.AccountType;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -20,5 +21,6 @@ public class CustomerCreationDTO {
     private String address;
     private LocalDate dateOfBirth;
     private String gender;
+    private AccountType accountType;
 }
 

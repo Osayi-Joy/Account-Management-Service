@@ -1,10 +1,12 @@
 package com.interswitchgroup.accountmanagementsystem.customers.service.impl;
 
+import com.interswitchgroup.accountmanagementsystem.accounts.dto.AccountDto;
+import com.interswitchgroup.accountmanagementsystem.accounts.dto.AccountResponseDto;
+import com.interswitchgroup.accountmanagementsystem.accounts.service.AccountService;
 import com.interswitchgroup.accountmanagementsystem.authentication.dto.request.UserAuthProfileRequest;
 import com.interswitchgroup.accountmanagementsystem.authentication.model.UserAuthProfile;
 import com.interswitchgroup.accountmanagementsystem.authentication.service.UserAuthService;
 import com.interswitchgroup.accountmanagementsystem.common.constants.ErrorConstants;
-import com.interswitchgroup.accountmanagementsystem.common.utils.BeanUtilWrapper;
 import com.interswitchgroup.accountmanagementsystem.common.utils.CommonUtils;
 import com.interswitchgroup.accountmanagementsystem.common.utils.PaginatedResponseDTO;
 import com.interswitchgroup.accountmanagementsystem.customers.dto.CustomerCreationDTO;
@@ -12,9 +14,11 @@ import com.interswitchgroup.accountmanagementsystem.customers.dto.CustomerDTO;
 import com.interswitchgroup.accountmanagementsystem.customers.model.Customer;
 import com.interswitchgroup.accountmanagementsystem.customers.repository.CustomerRepository;
 import com.interswitchgroup.accountmanagementsystem.customers.service.CustomerService;
+import com.interswitchgroup.accountmanagementsystem.dashboard.dto.CustomerDetailsDto;
 import jakarta.persistence.EntityExistsException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -32,12 +36,14 @@ import static com.interswitchgroup.accountmanagementsystem.common.constants.Cons
 import static com.interswitchgroup.accountmanagementsystem.common.constants.Constants.ROLE_USER;
 import static com.interswitchgroup.accountmanagementsystem.common.utils.CommonUtils.createPaginatedResponse;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CustomerServiceImpl implements CustomerService {
 
     private final UserAuthService userAuthServiceImpl;
     private final CustomerRepository customerRepository;
+    private final AccountService accountService;
 
     @Override
     public CustomerDTO createCustomer(CustomerCreationDTO request) {
@@ -65,6 +71,11 @@ public class CustomerServiceImpl implements CustomerService {
 
        var savedCustomer = customerRepository.save(customer);
 
+        accountService.createAccount(AccountDto.builder()
+                .accountType(request.getAccountType())
+                .customerId(savedCustomer.getId())
+                .build());
+
         return convertToDTO(savedCustomer);
     }
 
@@ -81,10 +92,14 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public CustomerDTO getCustomerById(Long customerId) {
+    public CustomerDetailsDto getCustomerById(Long customerId) {
         Customer customer = customerRepository.findById(customerId)
                 .orElseThrow(() -> new EntityNotFoundException(ErrorConstants.CUSTOMER_NOT_FOUND));
-        return convertToDTO(customer);
+        List<AccountResponseDto> accounts = accountService.getAccountByCustomerId(customer.getId());
+        return CustomerDetailsDto.builder()
+                .accounts(accounts)
+                .customer(convertToDTO(customer))
+                .build();
     }
 
     @Override
@@ -92,7 +107,6 @@ public class CustomerServiceImpl implements CustomerService {
         String username = CommonUtils.getLoggedInUsername();
         Customer customer = customerRepository.findByUserAuthProfile_Email(username)
                 .orElseThrow(() -> new EntityNotFoundException("Customer not found"));
-
         return convertToDTO(customer);
     }
     private CustomerDTO convertToDTO(Customer customer) {

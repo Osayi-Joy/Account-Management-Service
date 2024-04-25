@@ -8,13 +8,17 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @EqualsAndHashCode
 @Builder
-public class AccountDto implements Serializable {
+public class AccountResponseDto implements Serializable {
+    private Long id;
     private AccountType accountType;
     private Long customerId;
+    private String accountNumber;
+    private BigDecimal accountBalance;
 }
