@@ -3,6 +3,7 @@ package com.interswitchgroup.accountmanagementsystem.customers.service;
 import com.interswitchgroup.accountmanagementsystem.common.utils.PaginatedResponseDTO;
 import com.interswitchgroup.accountmanagementsystem.customers.dto.CustomerCreationDTO;
 import com.interswitchgroup.accountmanagementsystem.customers.dto.CustomerDTO;
+import com.interswitchgroup.accountmanagementsystem.dashboard.dto.CustomerDetailsDto;
 
 /**
  * @author Joy Osayi
@@ -13,7 +14,7 @@ public interface CustomerService {
 
     PaginatedResponseDTO<CustomerDTO> getAllCustomers(int pageNumber, int pageSize);
 
-    CustomerDTO getCustomerById(Long customerId);
+    CustomerDetailsDto getCustomerById(Long customerId);
 
     CustomerDTO viewAuthenticatedCustomerDetails();
 }
