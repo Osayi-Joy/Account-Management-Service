@@ -1,7 +1,10 @@
 package com.interswitchgroup.accountmanagementsystem.common.config.security;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.*;
 import java.security.cert.Certificate;
 import java.security.cert.CertificateException;
@@ -27,7 +30,7 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 @RequiredArgsConstructor
 public class JwtConfiguration {
   @Value("${account-service.securityJWTKeyStorePath}")
-  private Resource keyStorePath;
+  private String keyStorePath;
 
   @Value("${account-service.securityJWTKeyStorePassword}")
   private String keyStorePassword;
@@ -42,7 +45,8 @@ public class JwtConfiguration {
   public KeyStore keyStore() {
     try {
       KeyStore keyStore = KeyStore.getInstance(KeyStore.getDefaultType());
-      InputStream resourceAsStream = keyStorePath.getInputStream();
+      Path path = Paths.get(keyStorePath);
+      InputStream resourceAsStream = new FileInputStream(path.toFile());
       keyStore.load(
               resourceAsStream, keyStorePassword.toCharArray());
       return keyStore;

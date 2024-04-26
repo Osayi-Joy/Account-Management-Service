@@ -23,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.context.event.EventListener;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import static com.interswitchgroup.accountmanagementsystem.common.constants.Constants.*;
@@ -35,7 +34,7 @@ public class BackgroundStartUpTaskImpl {
   private final RoleService roleServiceImpl;
   private final PermissionService permissionServiceImpl;
   @Value("${account-service.systemDefinedPermissions}")
-  private Resource systemDefinedPermissions;
+  private String systemDefinedPermissions;
   private final AdministratorService administratorService;
   private final UserAuthService userAuthProfileServiceImpl;
 
@@ -52,14 +51,15 @@ public class BackgroundStartUpTaskImpl {
 
 
   private void updateSystemPermissions() {
+    File file = getSystemFile(systemDefinedPermissions);
     Set<Permission> newAuthorities;
     try {
-      newAuthorities = CommonUtils.getObjectMapper().readValue(systemDefinedPermissions.getFile(), new TypeReference<>() {});
+      newAuthorities = CommonUtils.getObjectMapper().readValue(file, new TypeReference<>() {});
     } catch (IOException ignored) {
       log.trace("no update required");
       return;
     }
-    if ("systemPermissionUpdate.json".equals(systemDefinedPermissions.getFilename())) {
+    if ("systemPermissionUpdate.json".equals(file.getName())) {
       permissionServiceImpl.addOrUpdateSystemPermissions(newAuthorities);
     }
   }
